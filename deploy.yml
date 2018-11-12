@@ -31,7 +31,7 @@
   roles:
     - aptUpdate
     - nginx 
-    - letsencrypt
+#   - letsencrypt
     - geerlingguy.git
     - php-fpm
     - calcFrontHtml

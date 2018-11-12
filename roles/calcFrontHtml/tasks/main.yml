@@ -7,9 +7,9 @@
       group=root
       state=directory
 
-  - name: Clone calc-front
+  - name: Clone calc-front no ssl
     git:
-      repo: https://github.com/tty8747/calc_front.git
+      repo: https://github.com/tty8747/calc_front_nossl.git
       dest: "{{ localLocationHtmlApp }}"
       clone: yes
 
