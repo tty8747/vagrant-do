@@ -1,11 +1,6 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-$script = <<-SCRIPT
-echo ansible-galaxy installing...
-ansible-galaxy install -r requirements.yml
-SCRIPT
-
 Vagrant.configure("2") do |config|
 
   config.vm.box = "digital_ocean"
@@ -59,7 +54,8 @@ Vagrant.configure("2") do |config|
         locationGoApi: "/api/sum/",
         localLocationGoApi: "/srv/goapi",
       }
-
+      
+      ansible.galaxy_role_file = 'requirements.yml'
       ansible.playbook = "init.yml"
       ansible.playbook = "deploy.yml"
     end
