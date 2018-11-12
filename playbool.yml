@@ -1,0 +1,33 @@
+---
+ - hosts: all
+   vars:
+     ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+
+     site: tty8747.devops.srwx.net
+     when: ansible_nodename == "tty8747.devops.srwx.net"
+     site: goapp.aaaj.ru
+     when: ansible_nodename == "goapp.aaaj.ru"
+     site: go.aaaj.ru
+     when: ansible_nodename == "go.aaaj.ru"
+   
+   tasks:
+
+    - name: Adding user
+      user:
+        name: goto
+        groups: sudo
+        shell: /bin/bash
+
+    - name: Add ssh keys to remote host
+      authorized_key:
+        user: goto
+        state: present
+        key: "{{ lookup('file', '/home/goto/.ssh/id_rsa.pub') }}"
+
+    - name: push config /etc/sudoers
+      template:
+        src=templates/sudoers.j2
+        dest=/etc/sudoers
+        owner=root
+        group=root
+        mode=0600
