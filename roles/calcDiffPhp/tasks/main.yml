@@ -1,0 +1,14 @@
+---
+  - name: Clone php-diff
+    git:
+      repo: https://github.com/tty8747/calc_diff.git
+      dest: "{{ locallocationPhpFpmApp }}"
+      clone: yes
+
+  - name: сreate directory {{ locallocationPhpFpmApp }}
+    file:
+      path={{ locallocationPhpFpmApp }}
+      mode=0755
+      owner=root
+      group=root
+      state=directory

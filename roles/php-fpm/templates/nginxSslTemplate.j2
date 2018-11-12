@@ -1,0 +1,39 @@
+server {
+        listen 80;
+
+        server_name {{ site  }};
+
+        location / {
+                return 301 https://$server_name$request_uri;
+        }
+
+        location /.well-known/ {
+                root /opt/acme;
+        }
+}
+
+server {
+
+        listen 443 ssl;
+
+        server_name {{ site }};
+
+        ssl_certificate /etc/letsencrypt/live/{{ site }}/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/{{ site }}/privkey.pem;
+        ssl_dhparam /etc/ssl/certs/dhparam.pem;
+
+        location ~ /\.git/  {return 404;}
+
+        location {{ locationHtmlApp }} {
+                root {{ localLocationHtmlApp  }};
+        }
+        location {{ locationGoApi }} {
+                rewrite ^/api/(.*)$ /$1 break;
+                proxy_pass http://localhost:8080;
+        }
+        location {{ locationPhpFpmApp }} {
+                include fastcgi_params;
+                fastcgi_param SCRIPT_FILENAME {{ locallocationPhpFpmApp }}/diff.php;
+                fastcgi_pass unix:/var/run/php/php{{ phpFpmVersion }}-fpm.sock;
+        }
+}

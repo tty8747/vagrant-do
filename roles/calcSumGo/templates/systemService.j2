@@ -1,0 +1,11 @@
+[Unit]
+Description=goapi
+After=network.target
+
+[Service]
+Type=simple
+ExecStart={{ localLocationGoApi }}/main
+Restart=Always
+
+[Install]
+WantedBy=multi-user.target

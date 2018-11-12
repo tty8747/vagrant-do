@@ -1,0 +1,4 @@
+---
+phpFpmVersion: 7.0
+phpFpmListen: "/run/php/php7.0-fpm.sock"
+locationPhpFpmApp: "/api/diff/"

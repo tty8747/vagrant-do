@@ -1,13 +1,21 @@
 ---
  - hosts: all
+   gather_facts: no
    vars:
      ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
-
+     site: go.aaaj.ru
+   
    tasks:
+
+    - name: Installing python & apt update
+      raw: test -x /usr/bin/python || apt-get update && apt-get -y install python2.7-minimal
+
+    - name: default python2.7
+      raw: test -x /usr/bin/python || update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
 
     - name: Adding user
       user:
-        name: bro
+        name: goto
         groups: sudo
         shell: /bin/bash
 

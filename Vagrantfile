@@ -1,6 +1,11 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+$script = <<-SCRIPT
+echo ansible-galaxy installing...
+ansible-galaxy install -r requirements.yml
+SCRIPT
+
 Vagrant.configure("2") do |config|
 
   config.vm.box = "digital_ocean"
@@ -16,6 +21,8 @@ Vagrant.configure("2") do |config|
       provider.size = '512mb'
     end
 
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+
     config.vm.provision "shell", inline: <<-SHELL
       DEBIAN_FRONTEND=noninteractive
       export LANGUAGE=en_US.UTF-8
@@ -28,14 +35,9 @@ Vagrant.configure("2") do |config|
       update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
     SHELL
 
-    config.vm.synced_folder "." "/vagrant", disabled: true
 
     config.vm.provision "ansible" do |ansible|
       ansible.extra_vars = {
-       #var1: value1,
-       #hosts: all,
-       #hosts: "`/usr/bin/vagrant ssh-config | /bin/grep -i HostName | cut -d ' ' -f4`",
-       #devops_dir: $DEVOPS_PATH,
         site: "go.aaaj.ru",
 
         letsencrypts_email: "tty8747@gmail.com",
@@ -58,8 +60,8 @@ Vagrant.configure("2") do |config|
         localLocationGoApi: "/srv/goapi",
       }
 
-      ansible.playbook = "playbook.yml"
-      ansible.playbook = "playbook1.yml"
+      ansible.playbook = "init.yml"
+      ansible.playbook = "deploy.yml"
     end
   end
 end

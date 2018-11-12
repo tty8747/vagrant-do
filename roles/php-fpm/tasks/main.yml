@@ -1,0 +1,14 @@
+---
+  - name: Installing php-fpm
+    apt:
+      name=php{{ phpFpmVersion }}-fpm
+      state=present
+
+  - name: Push config nginx with php-fpm
+    template:
+      src=templates/nginxSslTemplate.j2
+      dest=/etc/nginx/sites-available/{{ site }}
+      owner=root
+      group=www-data
+      mode=0644
+    notify: restart nginx

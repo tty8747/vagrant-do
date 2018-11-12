@@ -1,0 +1,23 @@
+---
+  - name: сreate directory {{ localLocationHtmlApp }}
+    file:
+      path={{ localLocationHtmlApp }}
+      mode=0755
+      owner=root
+      group=root
+      state=directory
+
+  - name: Clone calc-front
+    git:
+      repo: https://github.com/tty8747/calc_front.git
+      dest: "{{ localLocationHtmlApp }}"
+      clone: yes
+
+  - name: Push config nginx with calc-front-html
+    template:
+      src=templates/nginxSslTemplate.j2
+      dest=/etc/nginx/sites-available/{{ site }}
+      owner=root
+      group=www-data
+      mode=0644
+    notify: restart nginx

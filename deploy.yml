@@ -1,0 +1,40 @@
+---
+- hosts: all
+# remote_user: goto
+# become: yes
+# become_user: root
+# become_method: sudo
+
+  vars:
+
+    site: go.aaaj.ru
+
+    letsencrypts_email: tty8747@gmail.com
+
+    update_cache: yes
+    cache_valid_time: 86400
+
+    worker_connections: 768
+
+    phpFpmVersion: 7.0
+    phpFpmListen: "/run/php/php7.0-fpm.sock"
+
+    locationPhpFpmApp: "/api/diff/"
+    locallocationPhpFpmApp: "/srv/phpapp/"
+
+    locationHtmlApp: "/"
+    localLocationHtmlApp: "/srv/www"
+   
+    locationGoApi: "/api/sum/"
+    localLocationGoApi: "/srv/goapi"
+
+  roles:
+    - aptUpdate
+    - nginx 
+    - letsencrypt
+    - geerlingguy.git
+    - php-fpm
+    - calcFrontHtml
+    - calcSumGo
+    - calcDiffPhp
+    - slackNotification

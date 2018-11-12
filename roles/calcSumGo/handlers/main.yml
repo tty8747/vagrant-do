@@ -1,0 +1,6 @@
+---
+ - name: reload-daemon
+   command: systemctl daemon-reload
+
+ - name: start goapi
+   service: name=goapi state=started
