@@ -7,7 +7,7 @@
 
   vars:
 
-    site: go.aaaj.ru
+#   site: go.aaaj.ru
 
     letsencrypts_email: tty8747@gmail.com
 

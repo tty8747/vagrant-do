@@ -21,5 +21,5 @@
    notify: reload nginx
 
  - name: create symlink
-   file: src=/etc/nginx/sites-available/{{ site }} dest=/etc/nginx/sites-enabled/{{ site }} state=link
+   file: src=/etc/nginx/sites-available/{{ site }} dest=/etc/nginx/sites-enabled/{{ site }} state=link force=yes
    notify: restart nginx
