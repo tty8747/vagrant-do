@@ -1,3 +1,6 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
 Vagrant.configure("2") do |config|
 
   config.vm.box = "digital_ocean"
@@ -12,16 +15,51 @@ Vagrant.configure("2") do |config|
       provider.region = 'nyc1'
       provider.size = '512mb'
     end
+
     config.vm.provision "shell", inline: <<-SHELL
+      DEBIAN_FRONTEND=noninteractive
+      export LANGUAGE=en_US.UTF-8
+      export LANG=en_US.UTF-8
+      export LC_ALL=en_US.UTF-8
+      locale-gen en_US.UTF-8
+      dpkg-reconfigure locales
       apt-get update
       test -x /usr/bin/python || apt-get -y install python2.7-minimal
       update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
     SHELL
-    def ip
-      puts "/usr/bin/vagrant ssh-config | /bin/grep -i HostName | cut -d ' ' -f4"
+
+    config.vm.synced_folder "." "/vagrant", disabled: true
+
+    config.vm.provision "ansible" do |ansible|
+      ansible.extra_vars = {
+       #var1: value1,
+       #hosts: all,
+       #hosts: "`/usr/bin/vagrant ssh-config | /bin/grep -i HostName | cut -d ' ' -f4`",
+       #devops_dir: $DEVOPS_PATH,
+        site: "go.aaaj.ru",
+
+        letsencrypts_email: "tty8747@gmail.com",
+
+        update_cache: "yes",
+        cache_valid_time: "86400",
+
+        worker_connections: "768",
+
+        phpFpmVersion: "7.0",
+        phpFpmListen: "/run/php/php7.0-fpm.sock",
+
+        locationPhpFpmApp: "/api/diff/",
+        locallocationPhpFpmApp: "/srv/phpapp/",
+
+        locationHtmlApp: "/",
+        localLocationHtmlApp: "/srv/www",
+   
+        locationGoApi: "/api/sum/",
+        localLocationGoApi: "/srv/goapi",
+      }
+
+      ansible.playbook = "playbook.yml"
+      ansible.playbook = "playbook1.yml"
     end
-#   config.vm.provision "ansible" do |ansible|
-#     ansible.playbook = "playbook.yml"
-#   end
   end
 end
